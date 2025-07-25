@@ -64,9 +64,9 @@ export default async function PaperPage({ params }: PageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       {/* Header */}
-      <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b shadow-sm">
+      <header className="bg-white/80 backdrop-blur-sm border-b shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-4">
@@ -77,7 +77,7 @@ export default async function PaperPage({ params }: PageProps) {
                 </Link>
               </Button>
               <Separator orientation="vertical" className="h-6" />
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-2xl font-bold text-gray-900">
                 Best Papers
               </h1>
             </div>
@@ -90,7 +90,7 @@ export default async function PaperPage({ params }: PageProps) {
                       Upload Paper
                     </Link>
                   </Button>
-                  <span className="text-sm text-gray-600 dark:text-gray-300">
+                  <span className="text-sm text-gray-600">
                     {user.email}
                   </span>
                 </>
@@ -118,7 +118,7 @@ export default async function PaperPage({ params }: PageProps) {
                   {paper.title}
                 </CardTitle>
                 
-                <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-4">
+                <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 mb-4">
                   <div className="flex items-center">
                     <User className="h-3 w-3 mr-1" />
                     <span className="text-xs">{authorEmail}</span>
@@ -148,7 +148,7 @@ export default async function PaperPage({ params }: PageProps) {
               <CardContent className="flex-1 flex flex-col overflow-hidden">
                 {paper.description && (
                   <div className="mb-4 flex-1 overflow-y-auto">
-                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                    <h3 className="text-sm font-semibold text-gray-900 mb-2">
                       Abstract
                     </h3>
                     <CardDescription className="text-sm leading-relaxed">
@@ -161,7 +161,7 @@ export default async function PaperPage({ params }: PageProps) {
                   <Separator />
                   
                   <div className="space-y-3">
-                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                    <h3 className="text-sm font-semibold text-gray-900">
                       Actions
                     </h3>
                     <div className="flex flex-col gap-2">
@@ -207,19 +207,19 @@ export default async function PaperPage({ params }: PageProps) {
                   <Separator />
 
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                    <h3 className="text-sm font-semibold text-gray-900 mb-2">
                       File Info
                     </h3>
                     <div className="space-y-1 text-xs">
                       <div className="flex justify-between items-start">
-                        <span className="font-medium text-gray-700 dark:text-gray-300">File:</span>
-                        <span className="text-gray-600 dark:text-gray-400 text-right max-w-[140px] truncate" title={paper.file_name}>
+                        <span className="font-medium text-gray-700">File:</span>
+                        <span className="text-gray-600 text-right max-w-[140px] truncate" title={paper.file_name}>
                           {paper.file_name}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="font-medium text-gray-700 dark:text-gray-300">Date:</span>
-                        <span className="text-gray-600 dark:text-gray-400">{formatDate(paper.created_at)}</span>
+                        <span className="font-medium text-gray-700">Date:</span>
+                        <span className="text-gray-600">{formatDate(paper.created_at)}</span>
                       </div>
                     </div>
                   </div>
@@ -241,10 +241,10 @@ export default async function PaperPage({ params }: PageProps) {
                 <CardContent className="text-center space-y-4">
                   <FileText className="mx-auto h-12 w-12 text-gray-400" />
                   <div>
-                    <p className="text-gray-900 dark:text-white font-medium mb-2">
+                    <p className="text-gray-900 font-medium mb-2">
                       Preview not available
                     </p>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                    <p className="text-gray-600 text-sm mb-4">
                       This file type is not supported for preview
                     </p>
                     <div className="flex gap-2 justify-center">

@@ -114,10 +114,10 @@ export default function CommentSection({ paperId, currentUserId }: CommentSectio
         </CardHeader>
         <CardContent>
           <div className="animate-pulse space-y-4">
-            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/4"></div>
             <div className="space-y-3">
-              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded"></div>
-              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+              <div className="h-3 bg-gray-200 rounded"></div>
+              <div className="h-3 bg-gray-200 rounded w-3/4"></div>
             </div>
           </div>
         </CardContent>
@@ -130,7 +130,7 @@ export default function CommentSection({ paperId, currentUserId }: CommentSectio
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <MessageCircle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <MessageCircle className="h-5 w-5 text-blue-600" />
             <CardTitle>Discussion</CardTitle>
             <Badge variant="secondary">{comments.length}</Badge>
           </div>
@@ -143,12 +143,12 @@ export default function CommentSection({ paperId, currentUserId }: CommentSectio
       <CardContent className="space-y-6">
         {/* Comment Form */}
         {currentUserId ? (
-          <Card className="bg-gray-50 dark:bg-gray-800/50 border-dashed">
+          <Card className="bg-gray-50 border-dashed">
             <CardContent className="pt-6">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="flex items-start space-x-3">
                   <Avatar className="h-8 w-8">
-                    <AvatarFallback className="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400">
+                    <AvatarFallback className="bg-blue-100 text-blue-600">
                       <User className="h-4 w-4" />
                     </AvatarFallback>
                   </Avatar>
@@ -185,15 +185,15 @@ export default function CommentSection({ paperId, currentUserId }: CommentSectio
             </CardContent>
           </Card>
         ) : (
-          <Card className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
+          <Card className="bg-blue-50 border-blue-200">
             <CardContent className="pt-6">
               <div className="text-center space-y-3">
-                <LogIn className="mx-auto h-8 w-8 text-blue-600 dark:text-blue-400" />
+                <LogIn className="mx-auto h-8 w-8 text-blue-600" />
                 <div>
-                  <p className="text-gray-900 dark:text-white font-medium">
+                  <p className="text-gray-900 font-medium">
                     Join the discussion
                   </p>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm">
+                  <p className="text-gray-600 text-sm">
                     Sign in to share your thoughts about this research
                   </p>
                 </div>
@@ -212,10 +212,10 @@ export default function CommentSection({ paperId, currentUserId }: CommentSectio
         {comments.length === 0 ? (
           <div className="text-center py-12">
             <MessageCircle className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
               No comments yet
             </h3>
-            <p className="text-gray-500 dark:text-gray-400">
+            <p className="text-gray-500">
               Be the first to share your thoughts about this research!
             </p>
           </div>
@@ -225,22 +225,22 @@ export default function CommentSection({ paperId, currentUserId }: CommentSectio
               <div key={comment.id}>
                 <div className="flex items-start space-x-3">
                   <Avatar className="h-8 w-8">
-                    <AvatarFallback className="bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                    <AvatarFallback className="bg-gray-100 text-gray-600">
                       {getInitials('Anonymous')}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-2 mb-1">
-                      <span className="font-medium text-gray-900 dark:text-white text-sm">
+                      <span className="font-medium text-gray-900 text-sm">
                         Anonymous User
                       </span>
-                      <div className="flex items-center text-gray-500 dark:text-gray-400 text-xs">
+                      <div className="flex items-center text-gray-500 text-xs">
                         <Clock className="h-3 w-3 mr-1" />
                         {formatDate(comment.created_at)}
                       </div>
                     </div>
-                    <div className="bg-white dark:bg-gray-800 rounded-lg border p-3">
-                      <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                                <div className="bg-white rounded-lg border p-3">
+              <p className="text-gray-700 text-sm leading-relaxed">
                         {comment.content}
                       </p>
                     </div>

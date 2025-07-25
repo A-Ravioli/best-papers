@@ -1,14 +1,16 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Document, Page, pdfjs } from 'react-pdf'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut, RotateCw, Download, ExternalLink, Loader2 } from 'lucide-react'
 
-// Set up the worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`
+// Set up the worker only on client side
+if (typeof window !== 'undefined') {
+  pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`
+}
 
 interface PdfViewerProps {
   url: string
@@ -23,6 +25,11 @@ export default function PdfViewer({ url, fileName, title }: PdfViewerProps) {
   const [rotation, setRotation] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const onDocumentLoadSuccess = useCallback(({ numPages }: { numPages: number }) => {
     setNumPages(numPages)
@@ -62,16 +69,27 @@ export default function PdfViewer({ url, fileName, title }: PdfViewerProps) {
     setPageNumber(1)
   }
 
+  if (!isClient) {
+    return (
+      <Card className="shadow-lg h-[600px] flex items-center justify-center">
+        <CardContent className="text-center space-y-4">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto text-blue-600" />
+          <p className="text-sm text-gray-600">Loading PDF viewer...</p>
+        </CardContent>
+      </Card>
+    )
+  }
+
   if (error) {
     return (
       <Card className="shadow-lg h-[600px] flex items-center justify-center">
         <CardContent className="text-center space-y-4">
           <div className="text-red-500 text-4xl">📄</div>
           <div>
-            <p className="text-gray-900 dark:text-white font-medium mb-2">
+            <p className="text-gray-900 font-medium mb-2">
               Unable to load PDF
             </p>
-            <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
+            <p className="text-gray-600 text-sm mb-4">
               {error}
             </p>
             <div className="flex gap-2 justify-center">
@@ -114,7 +132,7 @@ export default function PdfViewer({ url, fileName, title }: PdfViewerProps) {
 
       <CardContent className="p-0">
         {/* Controls */}
-        <div className="flex items-center justify-between p-3 border-b bg-gray-50 dark:bg-gray-800/50">
+        <div className="flex items-center justify-between p-3 border-b bg-gray-50">
           <div className="flex items-center gap-1">
             <Button
               variant="outline"
@@ -151,12 +169,12 @@ export default function PdfViewer({ url, fileName, title }: PdfViewerProps) {
         </div>
 
         {/* PDF Viewer */}
-        <div className="relative h-[520px] overflow-auto bg-gray-100 dark:bg-gray-900">
+        <div className="relative h-[520px] overflow-auto bg-gray-100">
           {loading && (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center space-y-2">
                 <Loader2 className="h-8 w-8 animate-spin mx-auto text-blue-600" />
-                <p className="text-sm text-gray-600 dark:text-gray-400">Loading document...</p>
+                <p className="text-sm text-gray-600">Loading document...</p>
               </div>
             </div>
           )}
@@ -174,7 +192,7 @@ export default function PdfViewer({ url, fileName, title }: PdfViewerProps) {
                 scale={scale}
                 rotate={rotation}
                 loading=""
-                className="bg-white border border-gray-300 dark:border-gray-600"
+                className="bg-white border border-gray-300"
                 renderTextLayer={false}
                 renderAnnotationLayer={false}
               />
@@ -183,8 +201,8 @@ export default function PdfViewer({ url, fileName, title }: PdfViewerProps) {
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between p-3 border-t bg-gray-50 dark:bg-gray-800/50">
-          <p className="text-xs text-gray-500 dark:text-gray-400 truncate max-w-xs">
+        <div className="flex items-center justify-between p-3 border-t bg-gray-50">
+          <p className="text-xs text-gray-500 truncate max-w-xs">
             {fileName}
           </p>
           <div className="flex gap-1">
