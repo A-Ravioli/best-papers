@@ -99,9 +99,9 @@ export default async function PaperPage({ params }: PageProps) {
           <div className="lg:col-span-4">
             <Card className="shadow-lg h-[600px] flex flex-col">
               <CardHeader className="pb-4 flex-shrink-0">
-                <CardTitle className="text-xl mb-3 leading-tight line-clamp-2">
-                  {paper.title}
-                </CardTitle>
+                                 <CardTitle className="text-xl mb-3 leading-tight">
+                   {paper.title}
+                 </CardTitle>
                 
                 <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-4">
                   <div className="flex items-center">
