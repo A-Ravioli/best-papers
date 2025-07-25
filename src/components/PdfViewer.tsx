@@ -1,16 +1,28 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
-import { Document, Page, pdfjs } from 'react-pdf'
+import dynamic from 'next/dynamic'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut, RotateCw, Download, ExternalLink, Loader2 } from 'lucide-react'
 
-// Set up the worker only on client side
-if (typeof window !== 'undefined') {
-  pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`
-}
+// Dynamically import react-pdf components to avoid SSR issues
+const Document = dynamic(
+  () => import('react-pdf').then((mod) => {
+    // Use local worker file to avoid CDN issues
+    if (typeof window !== 'undefined') {
+      mod.pdfjs.GlobalWorkerOptions.workerSrc = '/pdf-worker/pdf.worker.min.mjs'
+    }
+    return mod.Document
+  }),
+  { ssr: false }
+)
+
+const Page = dynamic(
+  () => import('react-pdf').then((mod) => mod.Page),
+  { ssr: false }
+)
 
 interface PdfViewerProps {
   url: string
@@ -20,12 +32,12 @@ interface PdfViewerProps {
 
 export default function PdfViewer({ url, fileName, title }: PdfViewerProps) {
   const [numPages, setNumPages] = useState<number | null>(null)
-  const [pageNumber, setPageNumber] = useState(1)
   const [scale, setScale] = useState(1.0)
   const [rotation, setRotation] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isClient, setIsClient] = useState(false)
+  const [viewMode, setViewMode] = useState<'scroll' | 'pages'>('scroll')
 
   useEffect(() => {
     setIsClient(true)
