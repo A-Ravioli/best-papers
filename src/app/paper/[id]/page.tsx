@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { ArrowLeft, Download, ExternalLink, Heart, MessageCircle, Eye, Calendar, FileText, User } from 'lucide-react'
+import { ArrowLeft, Download, ExternalLink, Heart, MessageCircle, Eye, Calendar, FileText, User, LogIn } from 'lucide-react'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -18,7 +18,7 @@ export default async function PaperPage({ params }: PageProps) {
   const { id } = await params
   const supabase = await createClient()
 
-  // Get current user
+  // Get current user (but don't require authentication)
   const {
     data: { user },
   } = await supabase.auth.getUser()
@@ -73,7 +73,7 @@ export default async function PaperPage({ params }: PageProps) {
               <Button asChild variant="ghost" size="sm">
                 <Link href="/dashboard">
                   <ArrowLeft className="mr-2 h-4 w-4" />
-                  Dashboard
+                  Browse Papers
                 </Link>
               </Button>
               <Separator orientation="vertical" className="h-6" />
@@ -81,14 +81,28 @@ export default async function PaperPage({ params }: PageProps) {
                 Best Papers
               </h1>
             </div>
-            {user && (
-              <Button asChild>
-                <Link href="/upload">
-                  <FileText className="mr-2 h-4 w-4" />
-                  Upload Paper
-                </Link>
-              </Button>
-            )}
+            <div className="flex items-center space-x-4">
+              {user ? (
+                <>
+                  <Button asChild>
+                    <Link href="/upload">
+                      <FileText className="mr-2 h-4 w-4" />
+                      Upload Paper
+                    </Link>
+                  </Button>
+                  <span className="text-sm text-gray-600 dark:text-gray-300">
+                    {user.email}
+                  </span>
+                </>
+              ) : (
+                <Button asChild variant="outline">
+                  <Link href="/login">
+                    <LogIn className="mr-2 h-4 w-4" />
+                    Sign In
+                  </Link>
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </header>
@@ -151,14 +165,23 @@ export default async function PaperPage({ params }: PageProps) {
                       Actions
                     </h3>
                     <div className="flex flex-col gap-2">
-                      <LikeButton
-                        paperId={paper.id}
-                        initialLiked={userLiked}
-                        initialCount={paper.likes.length}
-                        currentUserId={user?.id}
-                        variant="compact"
-                        className="w-full"
-                      />
+                      {user ? (
+                        <LikeButton
+                          paperId={paper.id}
+                          initialLiked={userLiked}
+                          initialCount={paper.likes.length}
+                          currentUserId={user.id}
+                          variant="compact"
+                          className="w-full"
+                        />
+                      ) : (
+                        <Button asChild variant="outline" size="sm" className="w-full">
+                          <Link href="/login">
+                            <LogIn className="mr-2 h-3 w-3" />
+                            Sign In to Like
+                          </Link>
+                        </Button>
+                      )}
                       <Button asChild size="sm" className="w-full">
                         <a
                           href={paper.file_url}

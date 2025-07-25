@@ -29,7 +29,8 @@ import {
   MessageCircle,
   User,
   Calendar,
-  FileText
+  FileText,
+  LogIn
 } from 'lucide-react'
 
 interface Paper {
@@ -66,13 +67,14 @@ export default function DashboardPage() {
   useEffect(() => {
     checkUser()
     fetchStats()
+    // Always fetch papers, regardless of authentication status
+    fetchPapers()
   }, [])
 
   useEffect(() => {
-    if (user) {
-      fetchPapers()
-    }
-  }, [user, activeTab])
+    // Refetch papers when tab changes or user state changes
+    fetchPapers()
+  }, [activeTab, user])
 
   useEffect(() => {
     filterPapers()
@@ -80,10 +82,7 @@ export default function DashboardPage() {
 
   const checkUser = async () => {
     const { data: { user }, error } = await supabase.auth.getUser()
-    if (error || !user) {
-      router.push('/login')
-      return
-    }
+    // Don't redirect if no user - allow browsing without authentication
     setUser(user)
   }
 
@@ -175,7 +174,7 @@ export default function DashboardPage() {
     })
   }
 
-  if (loading && !user) {
+  if (loading && papers.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800 flex items-center justify-center">
         <div className="text-center">
@@ -198,10 +197,21 @@ export default function DashboardPage() {
               </h1>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600 dark:text-gray-300">
-                {user?.email}
-              </span>
-              <LogoutButton />
+              {user ? (
+                <>
+                  <span className="text-sm text-gray-600 dark:text-gray-300">
+                    {user.email}
+                  </span>
+                  <LogoutButton />
+                </>
+              ) : (
+                <Button asChild variant="outline">
+                  <Link href="/login">
+                    <LogIn className="mr-2 h-4 w-4" />
+                    Sign In
+                  </Link>
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -272,12 +282,21 @@ export default function DashboardPage() {
               </Select>
             </div>
 
-            <Button asChild size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-              <Link href="/upload">
-                <Upload className="mr-2 h-4 w-4" />
-                Publish Your Paper Now
-              </Link>
-            </Button>
+            {user ? (
+              <Button asChild size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                <Link href="/upload">
+                  <Upload className="mr-2 h-4 w-4" />
+                  Publish Your Paper Now
+                </Link>
+              </Button>
+            ) : (
+              <Button asChild size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                <Link href="/login">
+                  <LogIn className="mr-2 h-4 w-4" />
+                  Sign In to Publish
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
 
@@ -349,9 +368,18 @@ export default function DashboardPage() {
             </p>
             {!searchQuery && (
               <Button asChild>
-                <Link href="/upload">
-                  <Upload className="mr-2 h-4 w-4" />
-                  Upload Your First Paper
+                <Link href={user ? "/upload" : "/login"}>
+                  {user ? (
+                    <>
+                      <Upload className="mr-2 h-4 w-4" />
+                      Upload Your First Paper
+                    </>
+                  ) : (
+                    <>
+                      <LogIn className="mr-2 h-4 w-4" />
+                      Sign In to Upload
+                    </>
+                  )}
                 </Link>
               </Button>
             )}
@@ -410,13 +438,13 @@ export default function DashboardPage() {
                   </div>
 
                   <div className="flex items-center justify-between">
-                                         <LikeButton
-                       paperId={paper.id}
-                       initialLiked={paper.userLiked || false}
-                       initialCount={paper.likes?.length || 0}
-                       currentUserId={user?.id}
-                       variant="compact"
-                     />
+                    <LikeButton
+                      paperId={paper.id}
+                      initialLiked={paper.userLiked || false}
+                      initialCount={paper.likes?.length || 0}
+                      currentUserId={user?.id}
+                      variant="compact"
+                    />
                     <Button asChild variant="outline" size="sm">
                       <Link href={`/paper/${paper.id}`}>
                         Read more →
