@@ -24,25 +24,25 @@ export default function CommentSection({ paperId, currentUserId }: CommentSectio
   const supabase = createClient()
 
   useEffect(() => {
-    fetchComments()
-  }, [paperId])
+    const fetchComments = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('comments')
+          .select('*')
+          .eq('paper_id', paperId)
+          .order('created_at', { ascending: false })
 
-  const fetchComments = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('comments')
-        .select('*')
-        .eq('paper_id', paperId)
-        .order('created_at', { ascending: false })
-
-      if (error) throw error
-      setComments(data || [])
-    } catch (error) {
-      console.error('Error fetching comments:', error)
-    } finally {
-      setIsLoading(false)
+        if (error) throw error
+        setComments(data || [])
+      } catch (error) {
+        console.error('Error fetching comments:', error)
+      } finally {
+        setIsLoading(false)
+      }
     }
-  }
+
+    fetchComments()
+  }, [paperId, supabase])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

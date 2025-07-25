@@ -1,6 +1,12 @@
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import CommentSection from '@/components/CommentSection'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
+import { ArrowLeft, Download, ExternalLink, Heart, MessageCircle, Eye, Calendar, FileText, User } from 'lucide-react'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -56,134 +62,179 @@ export default async function PaperPage({ params }: PageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <header className="bg-white dark:bg-gray-800 shadow">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800">
+      {/* Header */}
+      <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Best Papers
-            </h1>
+          <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-4">
-              <a
-                href="/dashboard"
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
-              >
-                ← Dashboard
-              </a>
-              {user && (
-                <a
-                  href="/upload"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300"
-                >
-                  Upload Paper
-                </a>
-              )}
+              <Button asChild variant="ghost" size="sm">
+                <Link href="/dashboard">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Dashboard
+                </Link>
+              </Button>
+              <Separator orientation="vertical" className="h-6" />
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Best Papers
+              </h1>
             </div>
+            {user && (
+              <Button asChild>
+                <Link href="/upload">
+                  <FileText className="mr-2 h-4 w-4" />
+                  Upload Paper
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="space-y-8">
-          {/* Paper Details */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-8">
-            <div className="flex items-start justify-between mb-6">
-              <div className="flex-1">
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                  {paper.title}
-                </h1>
-                
-                <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  <span>By {authorEmail}</span>
-                  <span>•</span>
-                  <span>{formatDate(paper.created_at)}</span>
-                  <span>•</span>
-                  <span>{paper.view_count + 1} views</span>
-                </div>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Two Column Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          {/* Left Column - Paper Details */}
+          <div className="space-y-6">
+            <Card className="shadow-lg">
+              <CardHeader className="pb-4">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <CardTitle className="text-2xl mb-3 leading-tight">
+                      {paper.title}
+                    </CardTitle>
+                    
+                    <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600 dark:text-gray-400 mb-4">
+                      <div className="flex items-center">
+                        <User className="h-4 w-4 mr-1" />
+                        {authorEmail}
+                      </div>
+                      <div className="flex items-center">
+                        <Calendar className="h-4 w-4 mr-1" />
+                        {formatDate(paper.created_at)}
+                      </div>
+                      <div className="flex items-center">
+                        <Eye className="h-4 w-4 mr-1" />
+                        {paper.view_count + 1} views
+                      </div>
+                    </div>
 
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      <Badge variant="secondary" className="flex items-center">
+                        <Heart className="h-3 w-3 mr-1" />
+                        {paper.likes.length} likes
+                      </Badge>
+                      <Badge variant="outline" className="flex items-center">
+                        <MessageCircle className="h-3 w-3 mr-1" />
+                        {paper.comments.length} comments
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+              </CardHeader>
+
+              <CardContent className="pt-0">
                 {paper.description && (
-                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-                    {paper.description}
-                  </p>
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                      Abstract
+                    </h3>
+                    <CardDescription className="text-base leading-relaxed">
+                      {paper.description}
+                    </CardDescription>
+                  </div>
                 )}
 
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center space-x-1 text-sm text-gray-600 dark:text-gray-400">
-                    <span>❤️</span>
-                    <span>{paper.likes.length} likes</span>
-                  </div>
-                  <div className="flex items-center space-x-1 text-sm text-gray-600 dark:text-gray-400">
-                    <span>💬</span>
-                    <span>{paper.comments.length} comments</span>
-                  </div>
-                </div>
-              </div>
+                <Separator className="my-6" />
 
-              <div className="ml-8 flex flex-col space-y-3">
-                <a
-                  href={paper.file_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-md transition duration-300 text-center"
-                >
-                  📄 View Document
-                </a>
-                <a
-                  href={paper.file_url}
-                  download={paper.file_name}
-                  className="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 font-semibold py-3 px-6 rounded-md transition duration-300 text-center"
-                >
-                  ⬇️ Download
-                </a>
-              </div>
-            </div>
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Actions
+                  </h3>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button asChild className="flex-1">
+                      <a
+                        href={paper.file_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <ExternalLink className="mr-2 h-4 w-4" />
+                        View Document
+                      </a>
+                    </Button>
+                    <Button asChild variant="outline" className="flex-1">
+                      <a
+                        href={paper.file_url}
+                        download={paper.file_name}
+                      >
+                        <Download className="mr-2 h-4 w-4" />
+                        Download
+                      </a>
+                    </Button>
+                  </div>
+                </div>
 
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                File Information
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <Separator className="my-6" />
+
                 <div>
-                  <span className="font-medium text-gray-700 dark:text-gray-300">Filename:</span>
-                  <span className="ml-2 text-gray-600 dark:text-gray-400">{paper.file_name}</span>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                    File Information
+                  </h3>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="font-medium text-gray-700 dark:text-gray-300">Filename:</span>
+                      <span className="text-gray-600 dark:text-gray-400 text-right max-w-xs truncate">{paper.file_name}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-medium text-gray-700 dark:text-gray-300">Uploaded:</span>
+                      <span className="text-gray-600 dark:text-gray-400">{formatDate(paper.created_at)}</span>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <span className="font-medium text-gray-700 dark:text-gray-300">Uploaded:</span>
-                  <span className="ml-2 text-gray-600 dark:text-gray-400">{formatDate(paper.created_at)}</span>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
 
-          {/* Embedded PDF Viewer */}
-          {paper.file_url.endsWith('.pdf') && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                Document Preview
-              </h3>
-              <div className="w-full h-96 border border-gray-300 dark:border-gray-600 rounded-md overflow-hidden">
-                <iframe
-                  src={`${paper.file_url}#toolbar=1&navpanes=1&scrollbar=1`}
-                  className="w-full h-full"
-                  title={`Preview of ${paper.title}`}
-                />
-              </div>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                Having trouble viewing? <a
-                  href={paper.file_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 dark:text-blue-400 hover:underline"
-                >
-                  Open in new tab
-                </a>
-              </p>
-            </div>
-          )}
-
-          {/* Comments Section */}
-          <CommentSection paperId={paper.id} currentUserId={user?.id} />
+          {/* Right Column - Document Preview */}
+          <div className="space-y-6">
+            {paper.file_url.endsWith('.pdf') && (
+              <Card className="shadow-lg">
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <FileText className="mr-2 h-5 w-5" />
+                    Document Preview
+                  </CardTitle>
+                  <CardDescription>
+                    View the document directly in your browser
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="w-full h-[600px] border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white">
+                    <iframe
+                      src={`${paper.file_url}#toolbar=1&navpanes=1&scrollbar=1`}
+                      className="w-full h-full"
+                      title={`Preview of ${paper.title}`}
+                    />
+                  </div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-3 text-center">
+                    Having trouble viewing?{' '}
+                    <a
+                      href={paper.file_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+                    >
+                      Open in new tab
+                    </a>
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
         </div>
+
+        {/* Comments Section - Full Width */}
+        <CommentSection paperId={paper.id} currentUserId={user?.id} />
       </main>
     </div>
   )
