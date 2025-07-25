@@ -42,17 +42,17 @@ export default async function ProfilePage() {
   }))
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <header className="bg-white dark:bg-gray-800 shadow">
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-3xl font-bold text-gray-900">
               My Profile
             </h1>
             <div className="flex items-center space-x-4">
               <a
                 href="/dashboard"
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
+                className="text-gray-600 hover:text-gray-800"
               >
                 ← Dashboard
               </a>
@@ -71,17 +71,17 @@ export default async function ProfilePage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <div className="bg-white rounded-lg shadow p-6">
               <div className="text-center">
-                <div className="w-20 h-20 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-blue-600">
                     {user.email?.[0]?.toUpperCase() || '?'}
                   </span>
                 </div>
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                <h2 className="text-xl font-semibold text-gray-900 mb-2">
                   {user.email}
                 </h2>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
+                <p className="text-sm text-gray-600">
                   Joined {new Date(user.created_at).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
@@ -90,23 +90,23 @@ export default async function ProfilePage() {
                 </p>
               </div>
 
-              <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+              <div className="mt-6 pt-6 border-t border-gray-200">
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-300">Papers:</span>
-                    <span className="text-gray-900 dark:text-white font-semibold">
+                    <span className="text-gray-600">Papers:</span>
+                    <span className="text-gray-900 font-semibold">
                       {processedPapers.length}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-300">Total Likes:</span>
-                    <span className="text-gray-900 dark:text-white font-semibold">
+                    <span className="text-gray-600">Total Likes:</span>
+                    <span className="text-gray-900 font-semibold">
                       {processedPapers.reduce((sum, paper) => sum + paper.likes.count, 0)}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-300">Total Views:</span>
-                    <span className="text-gray-900 dark:text-white font-semibold">
+                    <span className="text-gray-600">Total Views:</span>
+                    <span className="text-gray-900 font-semibold">
                       {processedPapers.reduce((sum, paper) => sum + paper.view_count, 0)}
                     </span>
                   </div>
@@ -117,18 +117,18 @@ export default async function ProfilePage() {
 
           <div className="lg:col-span-3">
             <div className="mb-6">
-              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-2xl font-semibold text-gray-900">
                 My Papers ({processedPapers.length})
               </h2>
             </div>
 
             {processedPapers.length === 0 ? (
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-8 text-center">
+              <div className="bg-white rounded-lg shadow p-8 text-center">
                 <div className="text-6xl mb-4">📄</div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   No papers yet
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                <p className="text-gray-600 mb-4">
                   Start sharing your research with the community!
                 </p>
                 <a

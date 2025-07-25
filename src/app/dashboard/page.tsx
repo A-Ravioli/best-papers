@@ -176,30 +176,30 @@ export default function DashboardPage() {
 
   if (loading && papers.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+          <p className="text-gray-600">Loading...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       {/* Header */}
-      <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b shadow-sm">
+      <header className="bg-white/80 backdrop-blur-sm border-b shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-2xl font-bold text-gray-900">
                 Best Papers
               </h1>
             </div>
             <div className="flex items-center space-x-4">
               {user ? (
                 <>
-                  <span className="text-sm text-gray-600 dark:text-gray-300">
+                  <span className="text-sm text-gray-600">
                     {user.email}
                   </span>
                   <LogoutButton />
@@ -220,10 +220,10 @@ export default function DashboardPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header Section */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Browse Publications
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
             Discover exceptional academic work from students at top universities. Find 
             inspiration, learn from peers, and explore cutting-edge research.
           </p>
@@ -315,10 +315,10 @@ export default function DashboardPage() {
 
           <TabsContent value="trending" className="mt-8">
             <div className="mb-4">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
                 Trending Papers
               </h2>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-gray-600">
                 Most liked papers in the last 24 hours
               </p>
             </div>
@@ -326,10 +326,10 @@ export default function DashboardPage() {
 
           <TabsContent value="recent" className="mt-8">
             <div className="mb-4">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
                 Recently Published
               </h2>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-gray-600">
                 Latest papers from the community
               </p>
             </div>
@@ -342,13 +342,13 @@ export default function DashboardPage() {
             {[...Array(6)].map((_, i) => (
               <Card key={i} className="animate-pulse">
                 <CardHeader>
-                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
-                  <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                  <div className="h-3 bg-gray-200 rounded w-1/2"></div>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
-                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded"></div>
-                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+                    <div className="h-3 bg-gray-200 rounded"></div>
+                    <div className="h-3 bg-gray-200 rounded w-5/6"></div>
                   </div>
                 </CardContent>
               </Card>
@@ -357,10 +357,10 @@ export default function DashboardPage() {
         ) : filteredPapers.length === 0 ? (
           <div className="text-center py-16">
             <FileText className="mx-auto h-16 w-16 text-gray-400 mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
               {searchQuery ? 'No papers found' : 'No papers yet'}
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
+            <p className="text-gray-600 mb-6">
               {searchQuery 
                 ? 'Try adjusting your search terms or filters.'
                 : 'Be the first to share your research with the community!'
@@ -390,14 +390,14 @@ export default function DashboardPage() {
               <Card key={paper.id} className="hover:shadow-lg transition-shadow duration-300">
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between mb-2">
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="text-sm text-gray-600">
                       Anonymous University • CS101
                     </div>
                   </div>
                   <CardTitle className="text-lg leading-tight mb-2">
                     <Link 
                       href={`/paper/${paper.id}`}
-                      className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                      className="hover:text-blue-600 transition-colors"
                     >
                       {paper.title}
                     </Link>
@@ -419,7 +419,7 @@ export default function DashboardPage() {
                     </Badge>
                   </div>
 
-                  <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                  <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
                     <div className="flex items-center space-x-4">
                       <div className="flex items-center">
                         <Eye className="h-3 w-3 mr-1" />
@@ -461,30 +461,30 @@ export default function DashboardPage() {
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card>
             <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
+              <div className="text-3xl font-bold text-blue-600 mb-2">
                 {stats.totalPapers.toLocaleString()}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-sm text-gray-600">
                 Total Papers
               </div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
+              <div className="text-3xl font-bold text-green-600 mb-2">
                 {stats.totalUsers.toLocaleString()}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-sm text-gray-600">
                 Active Researchers
               </div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">
+              <div className="text-3xl font-bold text-purple-600 mb-2">
                 {stats.totalLikes.toLocaleString()}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-sm text-gray-600">
                 Total Likes
               </div>
             </CardContent>

@@ -51,12 +51,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="mb-8">
           <Link
             href="/"
-            className="inline-flex items-center text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white transition-colors"
+            className="inline-flex items-center text-sm text-gray-600 hover:text-gray-800 transition-colors"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to home
@@ -84,7 +84,7 @@ export default function LoginPage() {
           <CardContent className="space-y-6">
             <form onSubmit={handleAuth} className="space-y-4">
               <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label htmlFor="email" className="text-sm font-medium text-gray-700">
                   Email address
                 </label>
                 <div className="relative">
@@ -102,7 +102,7 @@ export default function LoginPage() {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="password" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label htmlFor="password" className="text-sm font-medium text-gray-700">
                   Password
                 </label>
                 <div className="relative">
@@ -119,7 +119,7 @@ export default function LoginPage() {
                   />
                 </div>
                 {isSignUp && (
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-gray-500">
                     Must be at least 6 characters long
                   </p>
                 )}
@@ -128,8 +128,8 @@ export default function LoginPage() {
               {message && (
                 <div className={`p-3 rounded-md text-sm border ${
                   message.includes('Check your email') 
-                    ? 'bg-green-50 dark:bg-green-950 text-green-800 dark:text-green-200 border-green-200 dark:border-green-800' 
-                    : 'bg-red-50 dark:bg-red-950 text-red-800 dark:text-red-200 border-red-200 dark:border-red-800'
+                                    ? 'bg-green-50 text-green-800 border-green-200'
+                : 'bg-red-50 text-red-800 border-red-200'
                 }`}>
                   {message}
                 </div>
@@ -171,7 +171,7 @@ export default function LoginPage() {
         </Card>
 
         <div className="mt-6 text-center">
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+                        <p className="text-xs text-gray-500">
             By continuing, you agree to our Terms of Service and Privacy Policy
           </p>
         </div>

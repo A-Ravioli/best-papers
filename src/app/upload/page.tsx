@@ -130,16 +130,16 @@ export default function UploadPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <header className="bg-white dark:bg-gray-800 shadow">
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-3xl font-bold text-gray-900">
               Upload Paper
             </h1>
             <a
               href="/dashboard"
-              className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
+              className="text-gray-600 hover:text-gray-800"
             >
               ← Back to Dashboard
             </a>
@@ -148,10 +148,10 @@ export default function UploadPage() {
       </header>
 
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-8">
+        <div className="bg-white rounded-lg shadow p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
                 Paper Title *
               </label>
               <input
@@ -160,13 +160,13 @@ export default function UploadPage() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter the title of your paper"
               />
             </div>
 
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
                 Description (Optional)
               </label>
               <textarea
@@ -174,20 +174,20 @@ export default function UploadPage() {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white resize-none"
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 placeholder="Provide a brief description or abstract of your paper"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Paper File *
               </label>
               <div
                 className={`relative border-2 border-dashed rounded-lg p-6 text-center transition duration-300 ${
                   dragActive
-                    ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                    : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
+                                      ? 'border-blue-400 bg-blue-50'
+                  : 'border-gray-300 hover:border-gray-400'
                 }`}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
@@ -204,19 +204,19 @@ export default function UploadPage() {
                   <div className="text-4xl">📄</div>
                   {file ? (
                     <div>
-                      <p className="text-sm font-medium text-green-600 dark:text-green-400">
+                      <p className="text-sm font-medium text-green-600">
                         {file.name}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {(file.size / 1024 / 1024).toFixed(2)} MB
-                      </p>
+                                              <p className="text-xs text-gray-500">
+                          {(file.size / 1024 / 1024).toFixed(2)} MB
+                        </p>
                     </div>
                   ) : (
                     <div>
-                      <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                              <p className="text-sm font-medium text-gray-700">
                         Drop your file here, or click to browse
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-xs text-gray-500">
                         PDF, DOC, DOCX up to 10MB
                       </p>
                     </div>
@@ -226,15 +226,15 @@ export default function UploadPage() {
             </div>
 
             {error && (
-              <div className="p-3 rounded-md bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
-                <p className="text-sm text-red-800 dark:text-red-400">{error}</p>
+                              <div className="p-3 rounded-md bg-red-50 border border-red-200">
+                  <p className="text-sm text-red-800">{error}</p>
               </div>
             )}
 
             <div className="flex justify-end space-x-4">
               <a
                 href="/dashboard"
-                className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-300"
+                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition duration-300"
               >
                 Cancel
               </a>

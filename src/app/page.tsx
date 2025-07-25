@@ -80,7 +80,7 @@ export default function LandingPage() {
       <section id="features" className="container mx-auto px-4 py-16 sm:py-24">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 text-white mb-4">
               Open access to academic excellence
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -180,8 +180,8 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">1</span>
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-blue-600">1</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Browse Immediately</h3>
                               <p className="text-gray-600">
@@ -190,23 +190,23 @@ export default function LandingPage() {
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-green-600 dark:text-green-400">2</span>
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-green-600">2</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Sign In When Ready</h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                Create an account only when you want to upload papers, like content, or join discussions.
-              </p>
+                              <p className="text-gray-600">
+                  Create an account only when you want to upload papers, like content, or join discussions.
+                </p>
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-purple-600 dark:text-purple-400">3</span>
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-purple-600">3</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Share & Engage</h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                Upload your research, engage with others&apos; work, and become part of the academic community.
-              </p>
+                              <p className="text-gray-600">
+                  Upload your research, engage with others&apos; work, and become part of the academic community.
+                </p>
             </div>
           </div>
         </div>
@@ -236,7 +236,7 @@ export default function LandingPage() {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto text-white border-white hover:bg-white hover:text-blue-600">
+              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto text-blue-600 border-white hover:bg-white hover:text-blue-600">
                 <Link href="/login">
                   Sign In to Contribute
                   <Upload className="ml-2 h-4 w-4" />
@@ -248,9 +248,9 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t bg-white/50 dark:bg-gray-950/50 backdrop-blur-sm">
+      <footer className="border-t bg-white/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-8">
-          <div className="text-center text-gray-600 dark:text-gray-400">
+                      <div className="text-center text-gray-600">
             <p>&copy; 2024 Best Papers. Open access to academic research.</p>
           </div>
         </div>
