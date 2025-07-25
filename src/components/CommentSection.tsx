@@ -1,7 +1,15 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
+import { MessageCircle, Send, LogIn, Clock, User } from 'lucide-react'
 
 interface Comment {
   id: string
@@ -75,103 +83,175 @@ export default function CommentSection({ paperId, currentUserId }: CommentSectio
   }
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    const date = new Date(dateString)
+    const now = new Date()
+    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60))
+
+    if (diffInMinutes < 1) return 'Just now'
+    if (diffInMinutes < 60) return `${diffInMinutes}m ago`
+    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`
+    if (diffInMinutes < 10080) return `${Math.floor(diffInMinutes / 1440)}d ago`
+    
+    return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
     })
+  }
+
+  const getInitials = (email: string) => {
+    return email.charAt(0).toUpperCase()
   }
 
   if (isLoading) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <div className="animate-pulse">
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
-          <div className="space-y-3">
-            <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded"></div>
-            <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+      <Card className="shadow-lg">
+        <CardHeader>
+          <div className="flex items-center space-x-2">
+            <MessageCircle className="h-5 w-5" />
+            <CardTitle>Comments</CardTitle>
           </div>
-        </div>
-      </div>
+        </CardHeader>
+        <CardContent>
+          <div className="animate-pulse space-y-4">
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
+            <div className="space-y-3">
+              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     )
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6" id="comments">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-        Comments ({comments.length})
-      </h3>
-
-      {currentUserId && (
-        <form onSubmit={handleSubmit} className="mb-6">
-          <div className="mb-4">
-            <textarea
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              placeholder="Write a comment..."
-              rows={3}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white resize-none"
-              disabled={isSubmitting}
-            />
+    <Card className="shadow-lg" id="comments">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <MessageCircle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <CardTitle>Discussion</CardTitle>
+            <Badge variant="secondary">{comments.length}</Badge>
           </div>
-          <button
-            type="submit"
-            disabled={isSubmitting || !newComment.trim()}
-            className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-2 px-4 rounded-md transition duration-300"
-          >
-            {isSubmitting ? 'Posting...' : 'Post Comment'}
-          </button>
-        </form>
-      )}
-
-      {!currentUserId && (
-        <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-md">
-          <p className="text-gray-600 dark:text-gray-300">
-            <a href="/login" className="text-blue-600 dark:text-blue-400 hover:underline">
-              Sign in
-            </a>{' '}
-            to join the discussion.
-          </p>
         </div>
-      )}
+        <CardDescription>
+          Join the conversation about this research paper
+        </CardDescription>
+      </CardHeader>
 
-      <div className="space-y-4">
-        {comments.length === 0 ? (
-          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-            No comments yet. Be the first to share your thoughts!
-          </div>
-        ) : (
-          comments.map((comment) => (
-            <div
-              key={comment.id}
-              className="border-b border-gray-200 dark:border-gray-700 last:border-b-0 pb-4 last:pb-0"
-            >
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-blue-600 dark:text-blue-400 text-sm font-semibold">
-                    A
-                  </span>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center space-x-2 mb-1">
-                    <span className="font-medium text-gray-900 dark:text-white text-sm">
-                      Anonymous
-                    </span>
-                    <span className="text-gray-500 dark:text-gray-400 text-xs">
-                      {formatDate(comment.created_at)}
-                    </span>
+      <CardContent className="space-y-6">
+        {/* Comment Form */}
+        {currentUserId ? (
+          <Card className="bg-gray-50 dark:bg-gray-800/50 border-dashed">
+            <CardContent className="pt-6">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <Avatar className="h-8 w-8">
+                    <AvatarFallback className="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400">
+                      <User className="h-4 w-4" />
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1">
+                    <Textarea
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                      placeholder="Share your thoughts about this paper..."
+                      className="min-h-[80px] resize-none"
+                      disabled={isSubmitting}
+                    />
                   </div>
-                  <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
-                    {comment.content}
+                </div>
+                <div className="flex justify-end">
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting || !newComment.trim()}
+                    size="sm"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                        Posting...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="mr-2 h-4 w-4" />
+                        Post Comment
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
+            <CardContent className="pt-6">
+              <div className="text-center space-y-3">
+                <LogIn className="mx-auto h-8 w-8 text-blue-600 dark:text-blue-400" />
+                <div>
+                  <p className="text-gray-900 dark:text-white font-medium">
+                    Join the discussion
+                  </p>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">
+                    Sign in to share your thoughts about this research
                   </p>
                 </div>
+                <Button asChild variant="outline" className="mt-3">
+                  <Link href="/login">
+                    <LogIn className="mr-2 h-4 w-4" />
+                    Sign In
+                  </Link>
+                </Button>
               </div>
-            </div>
-          ))
+            </CardContent>
+          </Card>
         )}
-      </div>
-    </div>
+
+        {/* Comments List */}
+        {comments.length === 0 ? (
+          <div className="text-center py-12">
+            <MessageCircle className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              No comments yet
+            </h3>
+            <p className="text-gray-500 dark:text-gray-400">
+              Be the first to share your thoughts about this research!
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {comments.map((comment, index) => (
+              <div key={comment.id}>
+                <div className="flex items-start space-x-3">
+                  <Avatar className="h-8 w-8">
+                    <AvatarFallback className="bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                      {getInitials('Anonymous')}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center space-x-2 mb-1">
+                      <span className="font-medium text-gray-900 dark:text-white text-sm">
+                        Anonymous User
+                      </span>
+                      <div className="flex items-center text-gray-500 dark:text-gray-400 text-xs">
+                        <Clock className="h-3 w-3 mr-1" />
+                        {formatDate(comment.created_at)}
+                      </div>
+                    </div>
+                    <div className="bg-white dark:bg-gray-800 rounded-lg border p-3">
+                      <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                        {comment.content}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                {index < comments.length - 1 && <Separator className="my-4" />}
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
   )
 }
