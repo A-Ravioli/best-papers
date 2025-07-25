@@ -55,14 +55,6 @@ export default function PdfViewer({ url, fileName, title }: PdfViewerProps) {
     setLoading(false)
   }, [])
 
-  const goToPrevPage = () => {
-    setPageNumber(prev => Math.max(1, prev - 1))
-  }
-
-  const goToNextPage = () => {
-    setPageNumber(prev => Math.min(numPages || 1, prev + 1))
-  }
-
   const zoomIn = () => {
     setScale(prev => Math.min(3.0, prev + 0.25))
   }
@@ -78,7 +70,29 @@ export default function PdfViewer({ url, fileName, title }: PdfViewerProps) {
   const resetView = () => {
     setScale(1.0)
     setRotation(0)
-    setPageNumber(1)
+  }
+
+  const toggleViewMode = () => {
+    setViewMode(prev => prev === 'scroll' ? 'pages' : 'scroll')
+  }
+
+  // Render all pages for scroll mode
+  const renderAllPages = () => {
+    if (!numPages) return null
+    
+    return Array.from({ length: numPages }, (_, index) => (
+      <div key={index + 1} className="mb-4 flex justify-center">
+        <Page
+          pageNumber={index + 1}
+          scale={scale}
+          rotate={rotation}
+          loading=""
+          className="bg-white border border-gray-300 shadow-md"
+          renderTextLayer={false}
+          renderAnnotationLayer={false}
+        />
+      </div>
+    ))
   }
 
   if (!isClient) {
@@ -132,7 +146,7 @@ export default function PdfViewer({ url, fileName, title }: PdfViewerProps) {
           <div className="flex items-center gap-2">
             {numPages && (
               <Badge variant="secondary" className="text-xs">
-                {pageNumber} / {numPages}
+                {viewMode === 'scroll' ? `${numPages} pages` : `Page 1 / ${numPages}`}
               </Badge>
             )}
             <Badge variant="outline" className="text-xs">
@@ -147,20 +161,11 @@ export default function PdfViewer({ url, fileName, title }: PdfViewerProps) {
         <div className="flex items-center justify-between p-3 border-b bg-gray-50">
           <div className="flex items-center gap-1">
             <Button
-              variant="outline"
+              variant={viewMode === 'scroll' ? 'default' : 'outline'}
               size="sm"
-              onClick={goToPrevPage}
-              disabled={pageNumber <= 1}
+              onClick={toggleViewMode}
             >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={goToNextPage}
-              disabled={pageNumber >= (numPages || 1)}
-            >
-              <ChevronRight className="h-4 w-4" />
+              {viewMode === 'scroll' ? 'Scroll View' : 'Page View'}
             </Button>
           </div>
 
@@ -191,7 +196,7 @@ export default function PdfViewer({ url, fileName, title }: PdfViewerProps) {
             </div>
           )}
           
-          <div className="flex justify-center p-4">
+          <div className="p-4">
             <Document
               file={url}
               onLoadSuccess={onDocumentLoadSuccess}
@@ -199,15 +204,25 @@ export default function PdfViewer({ url, fileName, title }: PdfViewerProps) {
               loading=""
               className="shadow-lg"
             >
-              <Page
-                pageNumber={pageNumber}
-                scale={scale}
-                rotate={rotation}
-                loading=""
-                className="bg-white border border-gray-300"
-                renderTextLayer={false}
-                renderAnnotationLayer={false}
-              />
+              {viewMode === 'scroll' ? (
+                // Scroll view - show all pages
+                <div className="space-y-4">
+                  {renderAllPages()}
+                </div>
+              ) : (
+                // Single page view
+                <div className="flex justify-center">
+                  <Page
+                    pageNumber={1}
+                    scale={scale}
+                    rotate={rotation}
+                    loading=""
+                    className="bg-white border border-gray-300"
+                    renderTextLayer={false}
+                    renderAnnotationLayer={false}
+                  />
+                </div>
+              )}
             </Document>
           </div>
         </div>
