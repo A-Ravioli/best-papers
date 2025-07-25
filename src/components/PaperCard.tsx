@@ -101,7 +101,7 @@ export default function PaperCard({ paper, currentUserId }: PaperCardProps) {
 
       <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
         <div className="flex items-center space-x-4">
-          <span>By {paper.author?.email || 'Unknown'}</span>
+          <span>By Anonymous</span>
           <span>•</span>
           <span>{formatDate(paper.created_at)}</span>
           <span>•</span>

@@ -19,9 +19,6 @@ export default async function DashboardPage() {
     .from('papers')
     .select(`
       *,
-      author:author_id (
-        email
-      ),
       likes (
         user_id
       ),
@@ -38,9 +35,6 @@ export default async function DashboardPage() {
     .from('papers')
     .select(`
       *,
-      author:author_id (
-        email
-      ),
       likes!inner (
         user_id,
         created_at

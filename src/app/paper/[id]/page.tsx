@@ -20,9 +20,6 @@ export default async function PaperPage({ params }: PageProps) {
     .from('papers')
     .select(`
       *,
-      author:author_id (
-        email
-      ),
       likes (
         user_id
       ),
@@ -36,6 +33,10 @@ export default async function PaperPage({ params }: PageProps) {
   if (error || !paper) {
     notFound()
   }
+
+  // For now, we'll show "Anonymous" since we can't easily join with auth.users
+  // In a production app, you'd want to store author info in a separate users table
+  const authorEmail = 'Anonymous'
 
   // Increment view count
   await supabase
@@ -93,7 +94,7 @@ export default async function PaperPage({ params }: PageProps) {
                 </h1>
                 
                 <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  <span>By {paper.author?.email || 'Unknown'}</span>
+                  <span>By {authorEmail}</span>
                   <span>•</span>
                   <span>{formatDate(paper.created_at)}</span>
                   <span>•</span>

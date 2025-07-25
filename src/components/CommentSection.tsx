@@ -31,12 +31,7 @@ export default function CommentSection({ paperId, currentUserId }: CommentSectio
     try {
       const { data, error } = await supabase
         .from('comments')
-        .select(`
-          *,
-          author:user_id (
-            email
-          )
-        `)
+        .select('*')
         .eq('paper_id', paperId)
         .order('created_at', { ascending: false })
 
@@ -64,12 +59,7 @@ export default function CommentSection({ paperId, currentUserId }: CommentSectio
             user_id: currentUserId,
           },
         ])
-        .select(`
-          *,
-          author:user_id (
-            email
-          )
-        `)
+        .select('*')
 
       if (error) throw error
 
@@ -161,13 +151,13 @@ export default function CommentSection({ paperId, currentUserId }: CommentSectio
               <div className="flex items-start space-x-3">
                 <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center flex-shrink-0">
                   <span className="text-blue-600 dark:text-blue-400 text-sm font-semibold">
-                    {comment.author?.email?.[0]?.toUpperCase() || '?'}
+                    A
                   </span>
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center space-x-2 mb-1">
                     <span className="font-medium text-gray-900 dark:text-white text-sm">
-                      {comment.author?.email || 'Unknown User'}
+                      Anonymous
                     </span>
                     <span className="text-gray-500 dark:text-gray-400 text-xs">
                       {formatDate(comment.created_at)}
