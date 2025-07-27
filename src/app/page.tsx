@@ -20,6 +20,36 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+      {/* Frosted Blur Header */}
+      <header className="bg-white/80 backdrop-blur-sm border-b shadow-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <div className="flex items-center space-x-4">
+              <h1 className="text-2xl font-bold text-gray-900">
+                Best Papers
+              </h1>
+            </div>
+            <div className="flex items-center space-x-4">
+              <Button asChild variant="ghost">
+                <Link href="/dashboard">
+                  Our Services
+                </Link>
+              </Button>
+              <Button asChild variant="ghost">
+                <Link href="/dashboard">
+                  Browse Papers
+                </Link>
+              </Button>
+              <Button asChild variant="outline">
+                <Link href="/login">
+                  Sign In
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </header>
+
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 sm:py-24">
         <div className="max-w-4xl mx-auto text-center">
