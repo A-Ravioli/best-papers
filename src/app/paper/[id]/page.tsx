@@ -1,59 +1,100 @@
-import { createClient } from '@/lib/supabase/server'
+'use client'
+
+import { useState, useEffect } from 'react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import CommentSection from '@/components/CommentSection'
 import PdfViewer from '@/components/PdfViewer'
 import LikeButton from '@/components/LikeButton'
+import CitationModal from '@/components/CitationModal'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { ArrowLeft, Download, ExternalLink, Heart, MessageCircle, Eye, Calendar, FileText, User, LogIn } from 'lucide-react'
+import { ArrowLeft, Download, ExternalLink, Heart, MessageCircle, Eye, Calendar, FileText, User, LogIn, Quote } from 'lucide-react'
 
 interface PageProps {
   params: Promise<{ id: string }>
 }
 
-export default async function PaperPage({ params }: PageProps) {
-  const { id } = await params
-  const supabase = await createClient()
+export default function PaperPage({ params }: PageProps) {
+  const [id, setId] = useState<string>('')
+  const [paper, setPaper] = useState<any>(null)
+  const [user, setUser] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+  const [userLiked, setUserLiked] = useState(false)
+  const [citationModalOpen, setCitationModalOpen] = useState(false)
 
-  // Get current user (but don't require authentication)
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  useEffect(() => {
+    const initializePage = async () => {
+      const resolvedParams = await params
+      setId(resolvedParams.id)
+      
+      const { createClient } = await import('@/lib/supabase/client')
+      const supabase = createClient()
 
-  // Fetch paper with author info, likes, and comments count
-  const { data: paper, error } = await supabase
-    .from('papers')
-    .select(`
-      *,
-      likes (
-        user_id
-      ),
-      comments (
-        id
-      )
-    `)
-    .eq('id', id)
-    .single()
+      // Get current user (but don't require authentication)
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      setUser(user)
 
-  if (error || !paper) {
-    notFound()
+      // Fetch paper with author info, likes, and comments count
+      const { data: paper, error } = await supabase
+        .from('papers')
+        .select(`
+          *,
+          likes (
+            user_id
+          ),
+          comments (
+            id
+          )
+        `)
+        .eq('id', resolvedParams.id)
+        .single()
+
+      if (error || !paper) {
+        notFound()
+        return
+      }
+
+      setPaper(paper)
+
+      // Check if current user liked this paper
+      const liked = user ? paper.likes.some((like: any) => like.user_id === user.id) : false
+      setUserLiked(liked)
+
+      // Increment view count
+      await supabase
+        .from('papers')
+        .update({ view_count: paper.view_count + 1 })
+        .eq('id', resolvedParams.id)
+
+      setLoading(false)
+    }
+
+    initializePage()
+  }, [params])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!paper) {
+    return null
   }
 
   // For now, we'll show "Anonymous" since we can't easily join with auth.users
   // In a production app, you'd want to store author info in a separate users table
   const authorEmail = 'Anonymous'
-
-  // Increment view count
-  await supabase
-    .from('papers')
-    .update({ view_count: paper.view_count + 1 })
-    .eq('id', id)
-
-  // Check if current user liked this paper
-  const userLiked = user ? paper.likes.some((like: any) => like.user_id === user.id) : false
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -201,6 +242,15 @@ export default async function PaperPage({ params }: PageProps) {
                           Download
                         </a>
                       </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full"
+                        onClick={() => setCitationModalOpen(true)}
+                      >
+                        <Quote className="mr-2 h-3 w-3" />
+                        Cite This
+                      </Button>
                     </div>
                   </div>
 
@@ -271,6 +321,19 @@ export default async function PaperPage({ params }: PageProps) {
         {/* Comments Section - Full Width */}
         <CommentSection paperId={paper.id} currentUserId={user?.id} />
       </main>
+
+      {/* Citation Modal */}
+      <CitationModal
+        isOpen={citationModalOpen}
+        onClose={() => setCitationModalOpen(false)}
+        paper={{
+          title: paper.title,
+          created_at: paper.created_at,
+          file_name: paper.file_name,
+          description: paper.description
+        }}
+        authorEmail={authorEmail}
+      />
     </div>
   )
 }
