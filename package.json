@@ -19,10 +19,15 @@
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.52.1",
     "autoprefixer": "^10.4.21",
+<<<<<<< HEAD
     "canvas-confetti": "^1.9.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dropzone": "^6.0.0-beta.2",
+=======
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+>>>>>>> 135d673a134d02d5b911721946789efc39855132
     "lucide-react": "^0.525.0",
     "next": "15.4.4",
     "pdfjs-dist": "^5.3.93",

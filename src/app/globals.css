@@ -71,6 +71,7 @@
   }
 }
 
+<<<<<<< HEAD
 @layer utilities {
   .font-fraunces {
     font-family: var(--font-fraunces);
@@ -81,6 +82,8 @@
   }
 }
 
+=======
+>>>>>>> 135d673a134d02d5b911721946789efc39855132
 /* Custom React PDF styling */
 .react-pdf__Page__textContent {
   @apply hidden;

@@ -48,6 +48,7 @@ module.exports = {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+<<<<<<< HEAD
         // BestPapers custom colors
         bp: {
           bg: "#fbfbfe",
@@ -56,6 +57,8 @@ module.exports = {
           secondary: "#0056A6",
           accent: "#00a4eb",
         },
+=======
+>>>>>>> 135d673a134d02d5b911721946789efc39855132
       },
       borderRadius: {
         lg: "var(--radius)",

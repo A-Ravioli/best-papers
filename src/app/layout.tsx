@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+<<<<<<< HEAD
 import { Inter, Fraunces } from 'next/font/google'
 import './globals.css'
 
@@ -12,6 +13,12 @@ const fraunces = Fraunces({
   weight: '700',
   variable: '--font-fraunces',
 })
+=======
+import { Inter } from 'next/font/google'
+import './globals.css'
+
+const inter = Inter({ subsets: ['latin'] })
+>>>>>>> 135d673a134d02d5b911721946789efc39855132
 
 export const metadata: Metadata = {
   title: 'Best Papers - Share Your Academic Writing',
@@ -25,7 +32,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+<<<<<<< HEAD
       <body className={`${inter.variable} ${fraunces.variable} font-sans`}>{children}</body>
+=======
+      <body className={inter.className}>{children}</body>
+>>>>>>> 135d673a134d02d5b911721946789efc39855132
     </html>
   )
 }
