@@ -6,10 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { FileText, Heart, MessageCircle, TrendingUp, Users, Download, Search, Upload, BookOpen, Star, ArrowRight, Eye } from 'lucide-react'
-<<<<<<< HEAD
 import Hero from '@/components/hero'
-=======
->>>>>>> 135d673a134d02d5b911721946789efc39855132
 
 export default function LandingPage() {
   const scrollToFeatures = () => {
@@ -54,64 +51,8 @@ export default function LandingPage() {
         </div>
       </header>
 
-<<<<<<< HEAD
       {/* New Hero Section */}
       <Hero />
-=======
-      {/* Hero Section */}
-      <section className="container mx-auto px-4 py-16 sm:py-24">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="mb-6">
-            <Badge variant="secondary" className="mb-4">
-              🚀 Academic Research Platform
-            </Badge>
-          </div>
-          
-          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-gray-900 mb-6">
-            Discover, Share & 
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
-              {" "}Collaborate
-            </span>
-          </h1>
-          
-          <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Browse exceptional academic work from students at top universities. No account needed to explore research - 
-            sign in only when you&apos;re ready to share your own work or join the discussion.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-            <Button asChild size="lg" className="w-full sm:w-auto">
-              <Link href="/dashboard">
-                <Eye className="mr-2 h-4 w-4" />
-                Browse Papers Now
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
-              <Link href="/login">
-                <Upload className="mr-2 h-4 w-4" />
-                Sign In to Publish
-              </Link>
-            </Button>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900">1000+</div>
-              <div className="text-sm text-gray-600">Research Papers</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900">500+</div>
-              <div className="text-sm text-gray-600">Active Researchers</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900">50+</div>
-              <div className="text-sm text-gray-600">Research Fields</div>
-            </div>
-          </div>
-        </div>
-      </section>
->>>>>>> 135d673a134d02d5b911721946789efc39855132
 
       <Separator className="mx-auto max-w-6xl" />
 
